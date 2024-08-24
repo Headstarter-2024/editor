@@ -5,9 +5,9 @@ export function timeAgo(timestamp: string): string {
   const diffInMinutes = Math.floor(diffInMs / 60000); // Convert to minutes
 
   if (diffInMinutes < 60) {
-    return `${diffInMinutes} minute${diffInMinutes === 1 ? '' : 's'} ago`;
+    return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
   } else {
     const diffInHours = Math.floor(diffInMinutes / 60);
-    return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`;
+    return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
   }
 }

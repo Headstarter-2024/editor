@@ -11,7 +11,7 @@ const Editor: React.FC = () => {
   const setActiveView = useEditorStore((state) => state.setActiveView);
 
   return (
-    <div className="card mx-auto w-full max-w-4xl bg-gray-50  p-4 shadow-xl">
+    <div className="card mx-auto w-full max-w-4xl bg-gray-50 p-4 shadow-xl">
       <h1 className="text-slate-900">Script 1</h1>
       <div className="mt-4 flex w-fit items-center justify-between rounded-full bg-base-200 p-2">
         <button
