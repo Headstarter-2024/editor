@@ -3,6 +3,7 @@
 import { useEditorStore } from "@/store";
 import { useState } from "react";
 import AddCommentModal from "./AddCommentModal";
+import Paragraph from "./Paragraph";
 
 const ScriptsView: React.FC = () => {
   const addComment = useEditorStore((state) => state.addComment);
@@ -10,27 +11,24 @@ const ScriptsView: React.FC = () => {
 
   const handleOpenModal = (id: number) => {
     setActiveParagraph(id);
-    document.getElementById("addCommentModal")?.showModal();
+    const modal = document.getElementById(
+      "addCommentModal",
+    ) as HTMLDialogElement;
+    modal?.showModal();
   };
 
   return (
     <div className="my-2">
-      <div className="tooltip tooltip-right" data-tip="Add Comment">
-        <p
-          className="mb-2 cursor-pointer p-2 hover:bg-gray-100"
-          onClick={() => handleOpenModal(1)}
-        >
-          Ever wonder how some SaaS products captivate you at first glance?
-        </p>
-      </div>
-      <p
-        className="mb-2 cursor-pointer p-2 hover:bg-gray-100"
-        onClick={() => handleOpenModal(2)}
-      >
-        It&apos;s all about presentation and clarity in communication...
-      </p>
-      {/* Add more paragraphs */}
-
+      <Paragraph
+        text="Ever wonder how some SaaS products captivate you at first glance?"
+        paragraphId={1}
+        onClick={handleOpenModal}
+      />
+      <Paragraph
+        text=" It's all about presentation and clarity in communication..."
+        paragraphId={2}
+        onClick={handleOpenModal}
+      />
       <AddCommentModal paragraphId={activeParagraph} />
     </div>
   );
