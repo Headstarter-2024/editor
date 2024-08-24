@@ -22,14 +22,14 @@ const Editor: React.FC = () => {
           Script
         </button>
         <button
-          className={`btn btn-sm ${activeView === "comments" ? "btn-neutral" : "btn-ghost"}`}
+          className={`btn btn-sm mx-2 ${activeView === "comments" ? "btn-neutral" : "btn-ghost"}`}
           onClick={() => setActiveView("comments")}
         >
           <MessageSquareText size={24} />
           Comments
         </button>
         <button
-          className={`btn btn-sm mx-2 ${activeView === "summary" ? "btn-neutral" : "btn-ghost"}`}
+          className={`btn btn-sm ${activeView === "summary" ? "btn-neutral" : "btn-ghost"}`}
           onClick={() => setActiveView("summary")}
         >
           <ScanText size={24} />
