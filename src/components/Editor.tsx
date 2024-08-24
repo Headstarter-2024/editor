@@ -4,6 +4,7 @@ import { useEditorStore } from "@/store";
 import { MessageSquareText, NotebookText, ScanText } from "lucide-react";
 import CommentsView from "./CommentsView";
 import ScriptsView from "./ScriptView";
+import SummaryView from "./SummaryView";
 
 const Editor: React.FC = () => {
   const activeView = useEditorStore((state) => state.activeView);
@@ -21,23 +22,24 @@ const Editor: React.FC = () => {
           Script
         </button>
         <button
-          className={`btn btn-sm mx-2 ${activeView === "summary" ? "btn-neutral" : "btn-ghost"}`}
-          onClick={() => setActiveView("summary")}
-        >
-          <ScanText size={24} />
-          Summary
-        </button>
-        <button
           className={`btn btn-sm ${activeView === "comments" ? "btn-neutral" : "btn-ghost"}`}
           onClick={() => setActiveView("comments")}
         >
           <MessageSquareText size={24} />
           Comments
         </button>
+        <button
+          className={`btn btn-sm mx-2 ${activeView === "summary" ? "btn-neutral" : "btn-ghost"}`}
+          onClick={() => setActiveView("summary")}
+        >
+          <ScanText size={24} />
+          Summary
+        </button>
       </div>
       <div className="container">
-        {activeView === 'scripts' && <ScriptsView />}
-         {activeView === 'comments' && <CommentsView />}
+        {activeView === "scripts" && <ScriptsView />}
+        {activeView === "comments" && <CommentsView />}
+        {activeView === "summary" && <SummaryView />}
       </div>
     </div>
   );
