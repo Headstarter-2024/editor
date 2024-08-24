@@ -18,7 +18,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
       <p className="text-left text-sm font-normal text-gray-700">Speaker: {speaker}</p>
       <div className="tooltip tooltip-top" data-tip="Add Comment">
         <p
-          className="mb-2 cursor-pointer rounded-lg p-2 text-left font-normal hover:bg-base-300"
+          className="mb-2 cursor-pointer rounded-lg p-2 text-left text-base font-normal hover:bg-base-300"
           onClick={() => onClick(paragraphId)}
         >
           {message}

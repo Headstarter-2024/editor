@@ -1,9 +1,14 @@
 import { create } from "zustand";
 
+interface Comment {
+  text: string;
+  timestamp: string;
+}
+
 // Define the shape of the state
 interface EditorState {
   activeView: "summary" | "scripts" | "comments";
-  comments: { [key: number]: string[] };
+  comments: { [key: number]: Comment[] };
   setActiveView: (view: "summary" | "scripts" | "comments") => void;
   addComment: (id: number, comment: string) => void;
 }
@@ -13,11 +18,14 @@ export const useEditorStore = create<EditorState>((set) => ({
   activeView: "scripts",
   comments: {},
   setActiveView: (view) => set({ activeView: view }),
-  addComment: (id, comment) =>
-    set((state) => ({
-      comments: {
-        ...state.comments,
-        [id]: [...(state.comments[id] || []), comment],
-      },
-    })),
+  addComment: (paragraphId, comment) => {
+      const timestamp = new Date().toISOString(); // Create a timestamp
+
+      set((state) => ({
+        comments: {
+          ...state.comments,
+          [paragraphId]: [...(state.comments[paragraphId] || []), { text: comment, timestamp }],
+        },
+      }));
+    },
 }));
