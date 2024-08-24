@@ -1,12 +1,25 @@
-"use client";
+import Link from "next/link";
 
-import Editor from "@/components/Editor";
-
-export default function Home() {
+export default function LandingPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-br from-slate-100 to-slate-300 p-2">
-      <section className="w-full">
-        <Editor />
+    <main className="flex min-h-screen flex-col items-center justify-between bg-pink-100 p-24">
+      <section className="text-center">
+        <h1 className="text-5xl font-bold text-slate-900">
+          Streamline Your Transcript Annotation and Summarization
+        </h1>
+        <p className="mt-4 text-xl text-gray-700">
+          Our powerful tool helps you efficiently annotate, manage, and
+          summarize sales transcripts, empowering your team to make data-driven
+          decisions.
+        </p>
+        <div className="mt-8">
+          <Link href="/editor">
+            <a className="btn btn-primary">Get Started</a>
+          </Link>
+          <Link href="/learn-more">
+            <a className="btn btn-secondary ml-4">Learn More</a>
+          </Link>
+        </div>
       </section>
     </main>
   );
