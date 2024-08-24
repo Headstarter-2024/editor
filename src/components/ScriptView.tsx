@@ -1,7 +1,9 @@
 "use client";
 
-import { useEditorStore } from "@/store";
 import { useState } from "react";
+
+import demoTranscript from "@/data/demo-transcript.json";
+import { useEditorStore } from "@/store";
 import AddCommentModal from "./AddCommentModal";
 import Paragraph from "./Paragraph";
 
@@ -19,16 +21,15 @@ const ScriptsView: React.FC = () => {
 
   return (
     <div className="my-2">
-      <Paragraph
-        text="Ever wonder how some SaaS products captivate you at first glance?"
-        paragraphId={1}
-        onClick={handleOpenModal}
-      />
-      <Paragraph
-        text=" It's all about presentation and clarity in communication..."
-        paragraphId={2}
-        onClick={handleOpenModal}
-      />
+      {demoTranscript.conversation.map((item, index) => (
+        <Paragraph
+          key={index}
+          speaker={item.speaker}
+          message={item.message}
+          paragraphId={index}
+          onClick={handleOpenModal}
+        />
+      ))}
       <AddCommentModal paragraphId={activeParagraph} />
     </div>
   );

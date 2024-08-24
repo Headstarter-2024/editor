@@ -1,24 +1,29 @@
 "use client";
 
 interface ParagraphProps {
-  text: string;
+  speaker: string;
+  message: string;
   paragraphId: number;
   onClick: (id: number) => void;
 }
 
 const Paragraph: React.FC<ParagraphProps> = ({
-  text,
+  speaker,
+  message,
   paragraphId,
   onClick,
 }) => {
   return (
-    <div className="tooltip tooltip-right" data-tip="Add Comment">
-      <p
-        className="mb-2 cursor-pointer p-2 hover:bg-gray-100"
-        onClick={() => onClick(paragraphId)}
-      >
-        {text}
-      </p>
+    <div>
+      <p className="text-left text-sm font-normal text-gray-700">Speaker: {speaker}</p>
+      <div className="tooltip tooltip-top" data-tip="Add Comment">
+        <p
+          className="mb-2 cursor-pointer rounded-lg p-2 text-left font-normal hover:bg-base-300"
+          onClick={() => onClick(paragraphId)}
+        >
+          {message}
+        </p>
+      </div>
     </div>
   );
 };
