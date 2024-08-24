@@ -1,4 +1,5 @@
-// components/ScriptsView.tsx
+"use client";
+
 import { useEditorStore } from "@/store";
 import { useState } from "react";
 

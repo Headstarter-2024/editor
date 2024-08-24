@@ -2,6 +2,7 @@
 
 import { useEditorStore } from "@/store";
 import { MessageSquareText, NotebookText, ScanText } from "lucide-react";
+import CommentsView from "./CommentsView";
 import ScriptsView from "./ScriptView";
 
 const Editor: React.FC = () => {
@@ -35,7 +36,8 @@ const Editor: React.FC = () => {
         </button>
       </div>
       <div className="container">
-        <ScriptsView />
+        {activeView === 'scripts' && <ScriptsView />}
+         {activeView === 'comments' && <CommentsView />}
       </div>
     </div>
   );
