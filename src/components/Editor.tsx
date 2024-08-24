@@ -13,21 +13,21 @@ const Editor: React.FC = () => {
       <h1 className="text-slate-900">Script 1</h1>
       <div className="mt-4 flex w-fit items-center justify-between rounded-full bg-base-200 p-2">
         <button
-          className={`btn ${activeView === "scripts" ? "btn-neutral" : ""}`}
+          className={`btn btn-sm ${activeView === "scripts" ? "btn-neutral" : "btn-ghost"}`}
           onClick={() => setActiveView("scripts")}
         >
           <NotebookText size={24} />
           Script
         </button>
         <button
-          className={`btn mx-2 ${activeView === "summary" ? "btn-neutral" : ""}`}
+          className={`btn btn-sm mx-2 ${activeView === "summary" ? "btn-neutral" : "btn-ghost"}`}
           onClick={() => setActiveView("summary")}
         >
           <ScanText size={24} />
           Summary
         </button>
         <button
-          className={`btn ${activeView === "comments" ? "btn-neutral" : ""}`}
+          className={`btn btn-sm ${activeView === "comments" ? "btn-neutral" : "btn-ghost"}`}
           onClick={() => setActiveView("comments")}
         >
           <MessageSquareText size={24} />
