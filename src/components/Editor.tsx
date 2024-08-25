@@ -92,7 +92,7 @@ const Editor: React.FC = () => {
             className={`btn btn-xs md:btn-sm ${activeView === "scripts" ? "btn-neutral" : "btn-ghost"}`}
             onClick={() => setActiveView("scripts")}
           >
-          <NotebookText className="size-4 md:size-6"/>
+            <NotebookText className="size-4 md:size-6" />
             Script
           </button>
           <button

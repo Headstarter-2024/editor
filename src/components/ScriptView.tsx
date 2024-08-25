@@ -21,6 +21,12 @@ const ScriptsView: React.FC = () => {
 
   return (
     <div className="my-2">
+      <p className="text-sm font-bold opacity-90">Speakers</p>
+      <p className="text-xs opacity-75">
+        Roof Sales Rep (52.38%), Prospective Customer (47.62%){" "}
+      </p>
+      <div className="divider m-0"></div>
+
       {demoTranscript.conversation.map((item, index) => (
         <Paragraph
           key={index}
