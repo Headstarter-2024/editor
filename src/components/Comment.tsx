@@ -27,28 +27,29 @@ const Comment: React.FC<CommentProps> = ({
 }) => {
   return (
     <li>
-      <div className="my-2 flex flex-row justify-between rounded-lg bg-base-300 p-2 align-bottom">
-        <div>
+      <div className="my-2 flex flex-col  rounded-lg bg-base-300 p-2 align-bottom">
+        <div className="flex flex-row justify-between">
           <div>
             <span className="text-xs font-semibold opacity-75">Manager • </span>
             <time className="text-xs opacity-50">{timeAgo(timestamp)}</time>
           </div>
+            <div>
+              <button
+                className="btn btn-primary btn-xs ml-4 hover:btn-info"
+                onClick={() => onEdit(paragraphId, commentIndex, commentText)}
+              >
+                <Pencil size={16} />
+              </button>
+              <button
+                className="btn btn-neutral btn-xs ml-2 hover:btn-warning"
+                onClick={() => onDelete(paragraphId, commentIndex)}
+              >
+                <Trash size={16} />
+              </button>
+            </div>
+        </div>
+
           <div className="text-sm">{commentText}</div>
-        </div>
-        <div className="align-bottom">
-          <button
-            className="btn btn-primary btn-xs ml-4 hover:btn-info"
-            onClick={() => onEdit(paragraphId, commentIndex, commentText)}
-          >
-            <Pencil size={16} />
-          </button>
-          <button
-            className="btn btn-neutral btn-xs ml-2 hover:btn-warning"
-            onClick={() => onDelete(paragraphId, commentIndex)}
-          >
-            <Trash size={16} />
-          </button>
-        </div>
       </div>
     </li>
   );
