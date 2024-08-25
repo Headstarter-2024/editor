@@ -2,9 +2,8 @@
 
 import demoTranscript from "@/data/demo-transcript.json"; // Import the transcript JSON
 import { useEditorStore } from "@/store";
-import { timeAgo } from "@/utils/timeAgo";
-import { Pencil, Trash } from "lucide-react";
 import React, { useState } from "react";
+import Comment from "./Comment";
 import EditCommentModal from "./EditCommentModal";
 
 const CommentsView: React.FC = () => {
@@ -56,43 +55,15 @@ const CommentsView: React.FC = () => {
 
             <ul className="mt-2 list-inside">
               {commentsList.map((comment, index) => (
-                <li key={index}>
-                  <div className="flex flex-row justify-between rounded-lg bg-base-300 p-2 align-bottom">
-                    <div>
-                      <div className="">
-                        <span className="text-xs font-semibold opacity-75">
-                          Manager •{" "}
-                        </span>
-                        <time className="text-xs opacity-50">
-                          {timeAgo(comment.timestamp)}
-                        </time>
-                      </div>
-                      <div className="text-sm">{comment.text}</div>
-                    </div>
-                    <div className="align-bottom">
-                      <button
-                        className="btn btn-primary btn-xs ml-4 hover:btn-info"
-                        onClick={() =>
-                          openEditModal(
-                            parseInt(paragraphId),
-                            index,
-                            comment.text,
-                          )
-                        }
-                      >
-                        <Pencil size={16} />
-                      </button>
-                      <button
-                        className="btn btn-neutral btn-xs ml-2 hover:btn-warning"
-                        onClick={() =>
-                          handleDeleteComment(parseInt(paragraphId), index)
-                        }
-                      >
-                        <Trash size={16} />
-                      </button>
-                    </div>
-                  </div>
-                </li>
+                <Comment
+                  key={index}
+                  paragraphId={parseInt(paragraphId)}
+                  commentIndex={index}
+                  commentText={comment.text}
+                  timestamp={comment.timestamp}
+                  onEdit={openEditModal}
+                  onDelete={handleDeleteComment}
+                />
               ))}
             </ul>
           </div>
