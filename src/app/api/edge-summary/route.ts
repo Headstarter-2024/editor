@@ -1,0 +1,174 @@
+import type { NextRequest } from "next/server";
+
+export const runtime = "edge";
+
+// Didn't had time to do an api for importing json, so hardcoding it here
+const conversation = {
+  conversation: [
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "Good afternoon! My name is John, and I'm with ProRoofing Solutions. I was just in the neighborhood, and I noticed your roof looks like it might be aging a bit. I wanted to see if you’d be interested in a free inspection to check for any potential issues.",
+    },
+    {
+      speaker: "Prospective Customer",
+      message:
+        "Hi, John. I have been noticing a few problems here and there, like some shingles curling up, but I haven’t really thought about getting an inspection. How much does that typically cost?",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "Actually, we offer the inspection completely free of charge. It’s a thorough check where we look for things like damaged shingles, potential leaks, or any wear and tear that could cause future problems. We also take photos so you can see exactly what’s going on up there.",
+    },
+    {
+      speaker: "Prospective Customer",
+      message:
+        "That sounds helpful. My roof is about 15 years old. Is that the typical lifespan?",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "That’s a great question. The average lifespan of an asphalt shingle roof, which most homes have, is around 15 to 20 years. If yours is 15 years old, you might be nearing the point where it’s time to start thinking about a replacement, especially if you're noticing curling shingles. Our inspection will help determine if repairs can buy you some more time or if a replacement would be the best option.",
+    },
+    {
+      speaker: "Prospective Customer",
+      message:
+        "I see. I’ve had a few leaks over the past year, nothing major, but I've patched them up myself. Do you think that’s a sign that the roof is failing?",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "Leaks can be a sign of deeper issues, especially if they’re recurring. Patching them is a good temporary fix, but leaks can cause damage to the underlying structure over time if not fully addressed. During the inspection, we’ll be able to identify if there’s any underlying damage that needs immediate attention.",
+    },
+    {
+      speaker: "Prospective Customer",
+      message:
+        "Hmm. So if it turns out I need a new roof, what are my options? I’ve heard about different materials, but I’m not really sure what’s best.",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "Great question! You have several options depending on your budget and the look you're going for. Asphalt shingles are still the most popular because they’re cost-effective and come in a variety of styles. But there are also metal roofs, which can last 50 years or more, and have excellent durability. There’s also wood, slate, or tile roofing for more of a premium look, but those do come at a higher cost. We can discuss all the options after the inspection and see what works best for your needs.",
+    },
+    {
+      speaker: "Prospective Customer",
+      message:
+        "Interesting. I’ve thought about metal, but I wasn’t sure if it would look good on my house.",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "Metal roofs have come a long way in design. They come in a variety of colors and styles now, some even designed to mimic the look of traditional shingles or tiles. Plus, they offer benefits like better energy efficiency, and they can withstand extreme weather conditions much better than other materials.",
+    },
+    {
+      speaker: "Prospective Customer",
+      message:
+        "That sounds pretty appealing. How long does the installation process usually take?",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "Once we start, the installation usually takes about one to three days, depending on the size of the roof and the materials you choose. We work quickly and efficiently to minimize disruption to your home life. We also make sure to clean up thoroughly afterward.",
+    },
+    {
+      speaker: "Prospective Customer",
+      message:
+        "Good to know. I’ll definitely think about it. What’s the next step if I want to move forward with the inspection?",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "All we need to do is schedule a time that’s convenient for you. It usually takes about 30 to 45 minutes for us to complete the inspection, and we’ll provide a detailed report of our findings. After that, if any repairs or replacements are necessary, we can discuss your options and provide a no-obligation quote.",
+    },
+    {
+      speaker: "Prospective Customer",
+      message:
+        "Okay, that sounds reasonable. Let’s go ahead and schedule the inspection then.",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "Great! I can come by as early as tomorrow, or we can schedule for later in the week. What works best for you?",
+    },
+    {
+      speaker: "Prospective Customer",
+      message: "Tomorrow works for me.",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message:
+        "Perfect! I’ll be here around 10 AM. I’ll bring the inspection report with me, and we can go over everything once it’s done. Thank you for your time, and I’ll see you tomorrow!",
+    },
+    {
+      speaker: "Prospective Customer",
+      message: "Thanks, John. See you tomorrow.",
+    },
+    {
+      speaker: "Roof Sales Rep",
+      message: "Looking forward to it. Have a great day!",
+    },
+  ],
+};
+
+export async function POST(request: NextRequest): Promise<Response> {
+  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: `
+                      You are an AI assistant specialized in summarizing conversations. Your task is to read and analyze a conversation provided in JSON format, then produce a concise yet comprehensive summary.
+
+                      The JSON input will contain an array of message objects. Each message object has two key-value pairs:
+                      1. "speaker": A string indicating who is speaking (e.g., "user1", "user2")
+                      2. "content": A string containing the actual message
+
+                      Your summary should:
+                      1. Capture the main topics discussed
+                      2. Highlight key points or decisions made
+                      3. Note any significant agreements or disagreements
+                      4. Mention any action items or next steps, if applicable
+                      5. Be concise, ideally no more than 3-4 sentences
+
+                      Maintain a neutral tone and avoid inserting personal opinions. Focus on accurately representing the content and flow of the conversation.
+
+                      After analyzing the JSON input, provide your summary in plain text format.
+                    `,
+          },
+          {
+            role: "user",
+            content: JSON.stringify(conversation), // Sending the conversation as a string
+          },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`OpenAI API Error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    return new Response(JSON.stringify(data), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Error calling OpenAI API:", error);
+    return new Response(
+      JSON.stringify({ error: "Failed to call OpenAI API" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  }
+}

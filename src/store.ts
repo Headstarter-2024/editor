@@ -11,6 +11,7 @@ interface Comment {
 interface EditorState {
   activeView: "summary" | "scripts" | "comments";
   comments: { [key: number]: Comment[] };
+  setComments: (comments: { [key: number]: Comment[] }) => void;
   setActiveView: (view: "summary" | "scripts" | "comments") => void;
   addComment: (id: number, comment: string) => void;
   editComment: (
@@ -32,6 +33,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   comments: {},
   setActiveView: (view) => set({ activeView: view }),
 
+  // Set fetched comments
+  setComments: (newComments) => set({ comments: newComments }),
+
   ablyClient: null, // Initial state for the Ably client
   ablyChannel: null, // Initial state for the Ably channel
 
@@ -42,7 +46,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   },
 
   // Add Comment and publish to Ably
-  addComment: (paragraphId, comment) => {
+  addComment: async (paragraphId, comment) => {
     // Create a timestamp
     const timestamp = new Date().toISOString();
 
@@ -57,6 +61,29 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       },
     }));
 
+    // Store the comment in KV via Cloudflare Pages API
+    try {
+      const response = await fetch("/api/add-comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paragraphId,
+          comment,
+          timestamp,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to store comment in KV");
+      }
+
+      console.log("Comment successfully stored in KV");
+    } catch (error) {
+      console.error("Error storing comment in KV:", error);
+    }
+
     // Check for Ably channel
     const ablyChannel = get().ablyChannel;
     if (!ablyChannel) return;
@@ -69,8 +96,10 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   },
 
   // Edit Comment and publish to Ably
-  editComment: (paragraphId, commentIndex, updatedText) => {
+  editComment: async (paragraphId, commentIndex, updatedText) => {
     const timestamp = new Date().toISOString();
+    const originalTimestamp =
+      get().comments[paragraphId][commentIndex].timestamp;
 
     // Update Zustand state
     set((state) => ({
@@ -83,6 +112,25 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         ),
       },
     }));
+
+    try {
+      // Call the edit-comment API to delete the old comment and add the new one
+      const response = await fetch("/api/edit-comment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paragraphId,
+          comment: updatedText,
+          originalTimestamp, // Send the original timestamp to delete the old comment
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to edit comment in KV");
+
+      console.log("Comment successfully edited in KV");
+    } catch (error) {
+      console.error("Error editing comment in KV:", error);
+    }
 
     // Check for Ably channel
     const ablyChannel = get().ablyChannel;
@@ -98,7 +146,24 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   },
 
   // Delete Comment and publish to Ably
-  deleteComment: (paragraphId, commentIndex) => {
+  deleteComment: async (paragraphId, commentIndex) => {
+    try {
+      const response = await fetch("/api/delete-comment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paragraphId,
+          timestamp: get().comments[paragraphId][commentIndex].timestamp,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to delete comment in KV");
+
+      console.log("Comment successfully deleted from KV");
+    } catch (error) {
+      console.error("Error deleting comment from KV:", error);
+    }
+
     // Update Zustand state
     set((state) => ({
       comments: {
