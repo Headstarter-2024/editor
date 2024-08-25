@@ -8,6 +8,7 @@ import EditCommentModal from "./EditCommentModal";
 
 const CommentsView: React.FC = () => {
   const comments = useEditorStore((state) => state.comments);
+ const deleteComment = useEditorStore((state) => state.deleteComment);
 
   // Track the paragraphId and commentIndex for the comment being edited
   const [editingComment, setEditingComment] = useState<{
@@ -31,6 +32,12 @@ const CommentsView: React.FC = () => {
     ) as HTMLDialogElement;
     modal?.showModal();
   };
+
+  const handleDeleteComment = (paragraphId: number, commentIndex: number) => {
+     if (confirm('Are you sure you want to delete this comment?')) { // Optional confirmation
+       deleteComment(paragraphId, commentIndex);
+     }
+   };
 
   return (
     <div className="flex flex-col">
@@ -70,6 +77,12 @@ const CommentsView: React.FC = () => {
                     >
                       Edit
                     </button>
+                      <button
+                         className="btn btn-error btn-xs ml-2"
+                         onClick={() => handleDeleteComment(parseInt(paragraphId), index)}
+                       >
+                         Delete
+                       </button>
                   </div>
                 </li>
               ))}
