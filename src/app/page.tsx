@@ -14,10 +14,10 @@ export default function LandingPage() {
         </p>
         <div className="mt-8">
           <Link href="/editor">
-            <a className="btn btn-primary">Get Started</a>
+            <span className="btn btn-primary">Get Started</span>
           </Link>
           <Link href="/learn-more">
-            <a className="btn btn-secondary ml-4">Learn More</a>
+            <span className="btn btn-secondary ml-4">Learn More</span>
           </Link>
         </div>
       </section>
