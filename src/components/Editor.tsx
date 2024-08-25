@@ -2,6 +2,7 @@
 
 import { useEditorStore } from "@/store";
 import { MessageSquareText, NotebookText, ScanText } from "lucide-react";
+import { useEffect, useRef } from "react";
 import CommentsView from "./CommentsView";
 import ScriptsView from "./ScriptView";
 import SummaryView from "./SummaryView";
@@ -9,6 +10,22 @@ import SummaryView from "./SummaryView";
 const Editor: React.FC = () => {
   const activeView = useEditorStore((state) => state.activeView);
   const setActiveView = useEditorStore((state) => state.setActiveView);
+  const initializeAblyClient = useEditorStore(
+    (state) => state.initializeAblyClient,
+  );
+  const subscribeToAbly = useEditorStore((state) => state.subscribeToAbly);
+
+  const isSubscribed = useRef(false);
+
+  useEffect(() => {
+    initializeAblyClient().then(() => {
+      if (!isSubscribed.current) {
+        subscribeToAbly();
+        isSubscribed.current = true;
+      }
+    });
+    subscribeToAbly();
+  }, [initializeAblyClient, subscribeToAbly]);
 
   return (
     <div className="card mx-auto w-full max-w-4xl bg-gray-50 p-4 shadow-xl">
