@@ -1,5 +1,6 @@
 // TODO: we'll have to get state and send to an AI model.
 "use client";
+import { Island_Moments } from "next/font/google";
 import { useEffect, useState } from "react";
 
 const SummaryView: React.FC = () => {
@@ -20,7 +21,7 @@ const SummaryView: React.FC = () => {
 
   useEffect(() => {
     // Fetch summary from API
-   fetchSummary();
+      fetchSummary();
   }, []);
 
 
