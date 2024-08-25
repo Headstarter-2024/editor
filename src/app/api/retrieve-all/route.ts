@@ -26,7 +26,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     const comments: Comment[] = await Promise.all(
       keys.keys.map(async (key) => {
         const commentData = await kv.get(key.name);
-        console.log(commentData)
+        console.log(commentData);
         const parsedComment = JSON.parse(commentData || "{}");
 
         // Extract the paragraphId from the key if not already present
@@ -36,15 +36,12 @@ export async function GET(request: NextRequest): Promise<Response> {
           ...parsedComment,
           paragraphId, // Add paragraphId to the comment
         };
-      })
+      }),
     );
 
-    return new Response(
-      JSON.stringify({ comments }),
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    return new Response(JSON.stringify({ comments }), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error retrieving all comments from KV:", error);
     return new Response(
@@ -52,7 +49,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
 }

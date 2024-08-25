@@ -12,7 +12,8 @@ interface CommentRequestBody {
 
 export async function POST(request: NextRequest) {
   // Parse the incoming JSON body
-  const { paragraphId, comment, timestamp }: CommentRequestBody = await request.json();
+  const { paragraphId, comment, timestamp }: CommentRequestBody =
+    await request.json();
 
   // Generate a unique key for the comment
   const commentKey = `comment:${paragraphId}:${timestamp}`;
