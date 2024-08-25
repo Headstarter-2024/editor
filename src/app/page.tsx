@@ -16,7 +16,7 @@ export default function LandingPage() {
           <Link href="/editor">
             <span className="btn btn-primary">Get Started</span>
           </Link>
-          <Link href="/learn-more">
+          <Link href="/">
             <span className="btn btn-secondary ml-4">Learn More</span>
           </Link>
         </div>

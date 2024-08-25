@@ -87,26 +87,26 @@ const Editor: React.FC = () => {
       </h1>
 
       <div className="p-4">
-        <div className="flex w-fit items-center justify-between rounded-full bg-base-200 p-2">
+        <div className="flex w-fit items-center justify-between rounded-full bg-base-200 p-1 md:p-2">
           <button
-            className={`btn btn-sm ${activeView === "scripts" ? "btn-neutral" : "btn-ghost"}`}
+            className={`btn btn-xs md:btn-sm ${activeView === "scripts" ? "btn-neutral" : "btn-ghost"}`}
             onClick={() => setActiveView("scripts")}
           >
-            <NotebookText size={24} />
+          <NotebookText className="size-4 md:size-6"/>
             Script
           </button>
           <button
-            className={`btn btn-sm mx-2 ${activeView === "comments" ? "btn-neutral" : "btn-ghost"}`}
+            className={`btn btn-xs mx-2 md:btn-sm ${activeView === "comments" ? "btn-neutral" : "btn-ghost"}`}
             onClick={() => setActiveView("comments")}
           >
-            <MessageSquareText size={24} />
+            <MessageSquareText className="size-4 md:size-6" />
             Comments
           </button>
           <button
-            className={`btn btn-sm ${activeView === "summary" ? "btn-neutral" : "btn-ghost"}`}
+            className={`btn btn-xs md:btn-sm ${activeView === "summary" ? "btn-neutral" : "btn-ghost"}`}
             onClick={() => setActiveView("summary")}
           >
-            <ScanText size={24} />
+            <ScanText className="size-4 md:size-6" />
             Summary
           </button>
         </div>
