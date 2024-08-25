@@ -3,12 +3,13 @@
 import demoTranscript from "@/data/demo-transcript.json"; // Import the transcript JSON
 import { useEditorStore } from "@/store";
 import { timeAgo } from "@/utils/timeAgo";
+import { Pencil, Trash } from "lucide-react";
 import React, { useState } from "react";
 import EditCommentModal from "./EditCommentModal";
 
 const CommentsView: React.FC = () => {
   const comments = useEditorStore((state) => state.comments);
- const deleteComment = useEditorStore((state) => state.deleteComment);
+  const deleteComment = useEditorStore((state) => state.deleteComment);
 
   // Track the paragraphId and commentIndex for the comment being edited
   const [editingComment, setEditingComment] = useState<{
@@ -34,10 +35,11 @@ const CommentsView: React.FC = () => {
   };
 
   const handleDeleteComment = (paragraphId: number, commentIndex: number) => {
-     if (confirm('Are you sure you want to delete this comment?')) { // Optional confirmation
-       deleteComment(paragraphId, commentIndex);
-     }
-   };
+    if (confirm("Are you sure you want to delete this comment?")) {
+      // Optional confirmation
+      deleteComment(paragraphId, commentIndex);
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -55,34 +57,40 @@ const CommentsView: React.FC = () => {
             <ul className="mt-2 list-inside">
               {commentsList.map((comment, index) => (
                 <li key={index}>
-                  <div className="rounded-lg bg-base-300 p-2">
-                    <div className="">
-                      <span className="text-xs font-semibold opacity-75">
-                        Manager •{" "}
-                      </span>
-                      <time className="text-xs opacity-50">
-                        {timeAgo(comment.timestamp)}
-                      </time>
+                  <div className="flex flex-row justify-between rounded-lg bg-base-300 p-2 align-bottom">
+                    <div>
+                      <div className="">
+                        <span className="text-xs font-semibold opacity-75">
+                          Manager •{" "}
+                        </span>
+                        <time className="text-xs opacity-50">
+                          {timeAgo(comment.timestamp)}
+                        </time>
+                      </div>
+                      <div className="text-sm">{comment.text}</div>
                     </div>
-                    <div className="text-sm">{comment.text}</div>
-                    <button
-                      className="btn btn-secondary btn-xs ml-4"
-                      onClick={() =>
-                        openEditModal(
-                          parseInt(paragraphId),
-                          index,
-                          comment.text,
-                        )
-                      }
-                    >
-                      Edit
-                    </button>
+                    <div className="align-bottom">
                       <button
-                         className="btn btn-error btn-xs ml-2"
-                         onClick={() => handleDeleteComment(parseInt(paragraphId), index)}
-                       >
-                         Delete
-                       </button>
+                        className="btn btn-primary btn-xs ml-4 hover:btn-info"
+                        onClick={() =>
+                          openEditModal(
+                            parseInt(paragraphId),
+                            index,
+                            comment.text,
+                          )
+                        }
+                      >
+                        <Pencil size={16} />
+                      </button>
+                      <button
+                        className="btn btn-neutral btn-xs ml-2 hover:btn-warning"
+                        onClick={() =>
+                          handleDeleteComment(parseInt(paragraphId), index)
+                        }
+                      >
+                        <Trash size={16} />
+                      </button>
+                    </div>
                   </div>
                 </li>
               ))}
