@@ -25,7 +25,7 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
     );
     const conversationData = await fs.readFile(filePath, "utf-8");
     const conversation = JSON.stringify(JSON.parse(conversationData));
-  
+
 
 
     // Call OpenAI API for summarization

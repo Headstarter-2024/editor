@@ -11,6 +11,7 @@ interface Comment {
 interface EditorState {
   activeView: "summary" | "scripts" | "comments";
   comments: { [key: number]: Comment[] };
+  setComments: (comments: { [key: number]: Comment[] }) => void;
   setActiveView: (view: "summary" | "scripts" | "comments") => void;
   addComment: (id: number, comment: string) => void;
   editComment: (
@@ -32,6 +33,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   comments: {},
   setActiveView: (view) => set({ activeView: view }),
 
+  // Set fetched comments
+  setComments: (newComments) => set({ comments: newComments }),
+
   ablyClient: null, // Initial state for the Ably client
   ablyChannel: null, // Initial state for the Ably channel
 
@@ -42,7 +46,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   },
 
   // Add Comment and publish to Ably
-  addComment: (paragraphId, comment) => {
+  addComment: async (paragraphId, comment) => {
     // Create a timestamp
     const timestamp = new Date().toISOString();
 
@@ -56,6 +60,29 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         ],
       },
     }));
+
+    // Store the comment in KV via Cloudflare Pages API
+    try {
+      const response = await fetch("/api/add-comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paragraphId,
+          comment,
+          timestamp,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to store comment in KV");
+      }
+
+      console.log("Comment successfully stored in KV");
+    } catch (error) {
+      console.error("Error storing comment in KV:", error);
+    }
 
     // Check for Ably channel
     const ablyChannel = get().ablyChannel;
