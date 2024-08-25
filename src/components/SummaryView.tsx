@@ -25,9 +25,8 @@ const SummaryView: React.FC = () => {
 
 
   return (
-    <div className="flex flex-col gap-[20px]">
-      <h1>Summary</h1>
-      <p>Here is a summary of your transcript:</p>
+    <div className="mt-4 flex flex-col gap-[20px]">
+      <p className="ml-2 font-bold">Here is a summary of your transcript:</p>
       <div className="flex rounded-xl bg-base-200 p-6 shadow-md">
       {isLoading ? (
           <div className="animate-pulse-slow">Generating...</div>
